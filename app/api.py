@@ -65,6 +65,7 @@ def show():
     if not all(key in data for key in ["gender", "SeniorCitizen", "Partner", "Dependents", "tenure", "PhoneService", "MultipleLines", "InternetService", "OnlineSecurity", "OnlineBackup", "DeviceProtection", "TechSupport", "StreamingTV", "StreamingMovies", "Contract", "PaperlessBilling", "PaymentMethod", "MonthlyCharges", "TotalCharges"]):
         return jsonify({"error": "Missing required input data"}), 400
     
+    
     df = extract_data(data)
     pred = load_model().predict(df)[0]
     if pred == 1:
