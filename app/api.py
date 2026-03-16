@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify , render_template
 import joblib
 import pandas as pd
 from pathlib import Path
@@ -57,13 +57,14 @@ def extract_data(data):
     return data_df
 
 
-@app.get('/predict')
+@app.post('/predict')
 def show():
-    data = request.form
+    data = request.args
     if not data:
         return jsonify({"error": "No input data provided"}), 400
     if not all(key in data for key in ["gender", "SeniorCitizen", "Partner", "Dependents", "tenure", "PhoneService", "MultipleLines", "InternetService", "OnlineSecurity", "OnlineBackup", "DeviceProtection", "TechSupport", "StreamingTV", "StreamingMovies", "Contract", "PaperlessBilling", "PaymentMethod", "MonthlyCharges", "TotalCharges"]):
         return jsonify({"error": "Missing required input data"}), 400
+    
     
     
     df = extract_data(data)
@@ -74,7 +75,7 @@ def show():
       return jsonify({"prediction": "Not Churn"})
   
 @app.get('/')
-def home():
-    return "Welcome to the Telecom Churn Prediction API!"
+def index():
+    return  render_template('index.html')
     
 app.run()
